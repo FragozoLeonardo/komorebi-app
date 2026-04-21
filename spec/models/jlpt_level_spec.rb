@@ -60,8 +60,6 @@ RSpec.describe JlptLevel, type: :model do
     end
   end
 
-  # ... (seus testes anteriores de unicidade e position)
-
   describe 'associations' do
     it 'can have many kanjis' do
       level = create(:jlpt_level)
