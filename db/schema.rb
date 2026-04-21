@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_13_023503) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_150325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,4 +23,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_023503) do
     t.index ["position"], name: "index_jlpt_levels_on_position", unique: true
     t.check_constraint "\"position\" > 0", name: "position_check"
   end
+
+  create_table "kanjis", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "jlpt_level_id", null: false
+    t.string "kanji", null: false
+    t.string "kun_reading"
+    t.string "meaning", null: false
+    t.text "mnemonic"
+    t.string "on_reading"
+    t.datetime "updated_at", null: false
+    t.index ["jlpt_level_id"], name: "index_kanjis_on_jlpt_level_id"
+    t.index ["kanji"], name: "index_kanjis_on_kanji", unique: true
+  end
+
+  add_foreign_key "kanjis", "jlpt_levels"
 end
