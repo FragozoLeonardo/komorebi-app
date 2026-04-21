@@ -60,6 +60,25 @@ RSpec.describe JlptLevel, type: :model do
     end
   end
 
+  # ... (seus testes anteriores de unicidade e position)
+
+  describe 'associations' do
+    it 'can have many kanjis' do
+      level = create(:jlpt_level)
+      create(:kanji, jlpt_level: level, kanji: "A")
+      create(:kanji, jlpt_level: level, kanji: "B")
+
+      expect(level.kanjis.count).to eq(2)
+    end
+
+    it 'destroys associated kanjis when the level is deleted' do
+      level = create(:jlpt_level)
+      create(:kanji, jlpt_level: level)
+
+      expect { level.destroy }.to change(Kanji, :count).by(-1)
+    end
+  end
+
   describe 'database-level constraints' do
     it 'raises a database error when bypassing Rails validations for uniqueness' do
       create(:jlpt_level, level_description: 'N1', position: 5)
