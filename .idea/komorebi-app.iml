@@ -53,6 +53,7 @@
     <orderEntry type="library" scope="PROVIDED" name="concurrent-ruby (v1.3.6, mise: 4.0.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="connection_pool (v3.0.2, mise: 4.0.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="crass (v1.0.6, mise: 4.0.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="csv (v3.3.5, mise: 4.0.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="date (v3.5.1, mise: 4.0.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="debug (v1.11.1, mise: 4.0.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="diff-lcs (v1.6.2, mise: 4.0.0) [gem]" level="application" />
