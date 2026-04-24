@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_150325) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_24_223549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -37,5 +37,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_150325) do
     t.index ["kanji"], name: "index_kanjis_on_kanji", unique: true
   end
 
+  create_table "review_cards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.float "ease_factor", default: 2.5, null: false
+    t.integer "interval", default: 0, null: false
+    t.datetime "next_review", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "repetitions", default: 0, null: false
+    t.bigint "reviewable_id", null: false
+    t.string "reviewable_type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_review_cards_on_reviewable"
+    t.index ["user_id", "next_review"], name: "index_review_cards_on_user_id_and_next_review"
+    t.index ["user_id"], name: "index_review_cards_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
   add_foreign_key "kanjis", "jlpt_levels"
+  add_foreign_key "review_cards", "users"
 end

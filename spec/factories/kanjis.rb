@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :kanji do
     sequence(:kanji) { |n| "字#{n}" }
