@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Kanji, type: :model do
+  it_behaves_like 'reviewable'
+
   describe 'successful creation' do
     it 'is valid with all factory attributes' do
       expect(build(:kanji)).to be_valid
@@ -15,17 +19,16 @@ RSpec.describe Kanji, type: :model do
 
   describe 'validations' do
     it 'is invalid without a kanji character' do
-      expect(build(:kanji, kanji: nil)).not_to be_valid
-    end
-
-    it 'is invalid without a meaning' do
-      expect(build(:kanji, meaning: nil)).not_to be_valid
+      kanji = build(:kanji, kanji: nil)
+      expect(kanji).not_to be_valid
+      expect(kanji.errors[:kanji]).to include("can't be blank")
     end
 
     it 'is invalid if the kanji character is already taken' do
-      create(:kanji, kanji: "一")
-      duplicate = build(:kanji, kanji: "一")
+      create(:kanji, kanji: "木")
+      duplicate = build(:kanji, kanji: "木")
       expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:kanji]).to include("has already been taken")
     end
   end
 
@@ -41,8 +44,8 @@ RSpec.describe Kanji, type: :model do
     it 'raises a NotNullViolation if jlpt_level_id is missing' do
       expect {
         Kanji.insert({
-                       kanji: "木",
-                       meaning: "Árvore, madeira",
+                       kanji: "水",
+                       meaning: "Água",
                        created_at: Time.current,
                        updated_at: Time.current
                      })

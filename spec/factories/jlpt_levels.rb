@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :jlpt_level do
     sequence(:level_description) { |n| "N#{n}-Gen" }
@@ -26,6 +28,11 @@ FactoryBot.define do
     trait :n1 do
       level_description { "N1" }
       position { 5 }
+    end
+
+    trait :work do
+      level_description { "Trabalho" }
+      position { 6 }
     end
   end
 end
