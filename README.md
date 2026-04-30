@@ -1,120 +1,135 @@
-# 🍂 KOMOREBI
+# Komorebi (木漏れ日)
 
-A Japanese learning application designed for Brazilian Portuguese speakers studying Japanese through structured progression in **Kanji, Vocabulary, and Grammar**, aligned with JLPT levels.
+A backend-focused Japanese learning system implementing a **Spaced Repetition System (SM-2 algorithm)** for long-term retention.
 
-Built with Ruby on Rails, Komorebi focuses on backend architecture for educational systems and long-term retention models.
-
----
-
-# 🧠 Overview
-
-Komorebi is a structured learning system for Japanese that organizes content into three main domains:
-
-- Kanji
-- Vocabulary
-- Grammar
-
-All content is aligned with JLPT levels (N5 → N1), providing a progressive learning path.
-
-The system is designed around retention-based learning principles inspired by spaced repetition.
+Originally designed for Brazilian Portuguese speakers, Komorebi structures learning across **Kanji, Vocabulary, and Grammar**, aligned with JLPT levels.
 
 ---
 
-# 📚 Learning Domains
+## Spaced Repetition System (SRS)
 
-## 🈶 Kanji
-- JLPT-based Kanji organization (N5 → N1)
-- Meanings and readings (on/kun)
-- Structured progression by difficulty level
+Komorebi implements a simplified version of the SM-2 algorithm (used in systems like Anki) to optimize long-term memory retention.
 
-## 📖 Vocabulary (in progress)
-- JLPT-aligned vocabulary items
-- Association with Kanji and usage context
-- Foundation for future review system expansion
+### How it works
 
-## 🧩 Grammar (in progress)
-- Grammar points structured by JLPT level
-- Planned support for examples and usage patterns
+1. User reviews a learning item with a quality score (0–5)
+2. The system recalculates:
 
----
+  * review interval
+  * ease factor
+  * next review date
+3. The updated state is persisted in `ReviewCard`
+4. A `ReviewLog` is created for historical tracking and analysis
 
-# 🧠 Learning System Concept
+### Example
 
-- Review-based learning model inspired by spaced repetition principles
-- User progress tracking per learning item
-- Retention-focused structure instead of linear learning
-- Extensible design for multiple content types (Kanji, Vocabulary, Grammar)
+```ruby
+Cards::Grade.call(
+  card: review_card,
+  quality: 4,
+  response_time_ms: 1200
+)
+```
 
-> ReviewCard serves as the persistence layer for the SRS engine.
->
-> Spaced repetition service layer is currently in development.
+### Responsibilities
 
----
+* `Srs::Sm2Calculator` — core scheduling algorithm
+* `Cards::Grade` — transactional orchestration of review logic
+* `ReviewCard` — current learning state
+* `ReviewLog` — historical review data
 
-# 🏗️ Architecture Highlights
+### Key behaviors
 
-- Ruby on Rails backend architecture
-- Polymorphic `ReviewCard` system for multiple learning types
-- Domain separation between:
-    - Kanji
-    - Vocabulary
-    - Grammar
-    - Review system
-- Database-level constraints for data integrity
-- Test-driven development using RSpec
+* Resets repetition on low-quality responses
+* Dynamically adjusts difficulty via ease factor
+* Enforces minimum ease factor (SM-2 constraint)
+* Uses transactional updates to guarantee consistency
 
 ---
 
-# 🧩 Core Models
+## Architecture
 
-- `User` — application users
-- `JlptLevel` — JLPT hierarchy (N5 → N1)
-- `Kanji` — Japanese characters with meanings and readings
-- `ReviewCard` — polymorphic review tracking system
-
-> Vocabulary and Grammar models are planned / under development.
-
----
-
-# 🧪 Testing Strategy
-
-- RSpec for model and system behavior
-- FactoryBot for test data generation
-- Database constraint validation tests
+* Ruby on Rails backend architecture
+* Polymorphic `ReviewCard` system supporting multiple learning domains
+* Clear separation between domain logic and orchestration layer
+* Transactional consistency using service/interactor pattern
+* Database-level constraints ensuring data integrity
+* Test-driven development with RSpec
 
 ---
 
-# 🚧 Current Status
+## Learning Domains
 
-- Kanji learning system implemented
-- JLPT structure implemented
-- Review tracking system implemented
-- Vocabulary module in early development (schema defined, implementation in progress)
-- Grammar module in early development (domain modeling in progress)
-- SRS service layer (spaced repetition engine) in progress
+### Kanji (Implemented)
 
----
+* JLPT-based organization (N5 → N1)
+* Meanings and readings (on/kun)
+* Structured progression by difficulty
 
-# ⚙️ Tech Stack
+### Vocabulary (Planned)
 
-- Ruby on Rails
-- PostgreSQL
-- RSpec
-- FactoryBot
-- ActiveRecord
+* JLPT-aligned vocabulary items
+* Association with Kanji and contextual usage
 
----
+### Grammar (Planned)
 
-# 🎯 Purpose
-
-Komorebi was built as an engineering exploration of:
-
-- structured language learning systems
-- backend architecture for educational platforms
-- scalable learning data modeling
+* Grammar points structured by JLPT level
+* Planned support for examples and usage patterns
 
 ---
 
-# 📷 Logo
+## Core Models
 
-![Logo](/app/assets/images/komorebi-logo.png)
+* `User` — application users
+* `JlptLevel` — JLPT hierarchy (N5 → N1)
+* `Kanji` — characters with meanings and readings
+* `ReviewCard` — polymorphic review tracking system
+* `ReviewLog` — historical performance tracking
+
+---
+
+## Testing Strategy
+
+* RSpec for domain and service behavior
+* FactoryBot for test data generation
+* Validation of business rules and database constraints
+* Transaction and failure scenario coverage
+
+---
+
+## Current Status
+
+* Kanji domain implemented
+* JLPT structure implemented
+* Spaced Repetition System (SM-2) implemented
+* Review tracking and logging system implemented
+
+The system is being expanded to support additional learning domains and richer user interaction flows.
+
+---
+
+## Purpose
+
+Komorebi was built to demonstrate backend engineering skills in:
+
+* data modeling for learning systems
+* implementation of spaced repetition algorithms
+* transactional business logic
+* scalable and extensible system design
+* test-driven development
+
+---
+
+## Tech Stack
+
+* Ruby on Rails
+* PostgreSQL
+* RSpec
+* FactoryBot
+* ActiveRecord
+
+---
+
+## Logo
+
+![Komorebi Logo](app/assets/images/komorebi-logo.png)
