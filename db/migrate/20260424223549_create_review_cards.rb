@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateReviewCards < ActiveRecord::Migration[8.1]
   def change
     create_table :review_cards do |t|

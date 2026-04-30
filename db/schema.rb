@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_24_223549) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_30_002247) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_223549) do
     t.index ["user_id"], name: "index_review_cards_on_user_id"
   end
 
+  create_table "review_logs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.float "ease_factor"
+    t.integer "interval"
+    t.integer "quality"
+    t.integer "response_time_ms"
+    t.bigint "reviewable_id", null: false
+    t.string "reviewable_type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_review_logs_on_reviewable"
+    t.index ["user_id"], name: "index_review_logs_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
@@ -62,4 +76,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_223549) do
 
   add_foreign_key "kanjis", "jlpt_levels"
   add_foreign_key "review_cards", "users"
+  add_foreign_key "review_logs", "users"
 end
