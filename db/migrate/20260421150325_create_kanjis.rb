@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateKanjis < ActiveRecord::Migration[8.1]
   def change
     create_table :kanjis do |t|
