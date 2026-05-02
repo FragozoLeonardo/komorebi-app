@@ -1,10 +1,42 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-km-bg-light: #f7f2e8;
+  --color-km-surface-light: #fffaf0;
+  --color-km-text-light: #2a241d;
+  --color-km-muted-light: #6f6558;
+  --color-km-border-light: #d6c3a1;
+  --color-km-accent-light: #c6a56b;
+
+  --color-km-bg-dark: #111311;
+  --color-km-surface-dark: #171917;
+  --color-km-text-dark: #f2dfb2;
+  --color-km-muted-dark: #b8a98a;
+  --color-km-border-dark: #8f7448;
+  --color-km-accent-dark: #d4b06a;
+}
+
+:root {
+  --app-bg: var(--color-km-bg-light);
+  --app-surface: var(--color-km-surface-light);
+  --app-text: var(--color-km-text-light);
+  --app-muted: var(--color-km-muted-light);
+  --app-border: var(--color-km-border-light);
+  --app-accent: var(--color-km-accent-light);
+}
+
+.dark {
+  --app-bg: var(--color-km-bg-dark);
+  --app-surface: var(--color-km-surface-dark);
+  --app-text: var(--color-km-text-dark);
+  --app-muted: var(--color-km-muted-dark);
+  --app-border: var(--color-km-border-dark);
+  --app-accent: var(--color-km-accent-dark);
+}
+
+html,
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}

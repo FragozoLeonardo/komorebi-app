@@ -2,27 +2,35 @@
 
 module Srs
   class Sm2Calculator
-    MIN_EASE = 1.3
+    MIN_EASE_FACTOR = 1.3
+    MIN_QUALITY = 0
+    MAX_QUALITY = 5
 
     def initialize(card, quality)
       @card = card
-      @q = quality.to_i
+      @quality = quality.to_i
     end
 
-    def calculate!
-      return @card unless @q.between?(0, 5)
+    def call
+      validate_quality!
 
       update_interval
       update_ease_factor
+      schedule_next_review
 
-      @card.next_review = Time.current + @card.interval.days
       @card
     end
 
     private
 
+    def validate_quality!
+      return if @quality.between?(MIN_QUALITY, MAX_QUALITY)
+
+      raise ArgumentError, "quality must be between #{MIN_QUALITY} and #{MAX_QUALITY}"
+    end
+
     def update_interval
-      if @q < 3
+      if @quality < 3
         @card.repetitions = 0
         @card.interval = 1
       else
@@ -35,13 +43,21 @@ module Srs
       case @card.repetitions
       when 0 then 1
       when 1 then 6
-      else (@card.interval * @card.ease_factor).round
+      else
+        (@card.interval * @card.ease_factor).round
       end
     end
 
     def update_ease_factor
-      new_ease = @card.ease_factor + (0.1 - (5 - @q) * (0.08 + (5 - @q) * 0.02))
-      @card.ease_factor = [ new_ease, MIN_EASE ].max
+      distance_from_perfect_score = 5 - @quality
+      adjustment = 0.1 - distance_from_perfect_score * (0.08 + distance_from_perfect_score * 0.02)
+      new_ease_factor = @card.ease_factor + adjustment
+
+      @card.ease_factor = [ new_ease_factor, MIN_EASE_FACTOR ].max
+    end
+
+    def schedule_next_review
+      @card.next_review = Time.current + @card.interval.days
     end
   end
 end

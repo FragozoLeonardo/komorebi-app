@@ -1,1 +1,34 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-komorebi-ivory: #fdfcf8;
+    --color-komorebi-paper: #f7f2e8;
+    --color-komorebi-ink: #1f1a17;
+    --color-komorebi-charcoal: #0f1115;
+    --color-komorebi-gold: #d4af37;
+    --color-komorebi-gold-soft: #c6a56b;
+    --color-komorebi-border-light: #e7dfd1;
+    --color-komorebi-border-dark: #1f2937;
+}
+
+:root {
+    color-scheme: light;
+}
+
+html.dark {
+    color-scheme: dark;
+}
+
+html,
+body {
+    background-color: var(--color-komorebi-ivory);
+    color: var(--color-komorebi-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark body {
+    background-color: var(--color-komorebi-charcoal);
+    color: #f8f5ef;
+}

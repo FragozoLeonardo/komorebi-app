@@ -7,34 +7,40 @@ module Cards
     def call
       validate_params!
 
+      card = context.card
+      quality = normalized_quality
+
       ActiveRecord::Base.transaction do
-        Srs::Sm2Calculator.new(context.card, context.quality).calculate!
-        context.card.save!
-        create_log!
+        Srs::Sm2Calculator.new(card, quality).call
+        card.save!
+        create_log!(card, quality)
       end
-    rescue ActiveRecord::ActiveRecordError => e
-      context.fail!(message: :database_error, detail: e.message)
+    rescue ActiveRecord::ActiveRecordError => error
+      context.fail!(message: :database_error, detail: error.message)
     rescue Interactor::Failure
       raise
-    rescue StandardError => e
-      context.fail!(message: :unexpected_error, detail: e.message)
+    rescue StandardError => error
+      context.fail!(message: :unexpected_error, detail: error.message)
     end
 
     private
 
     def validate_params!
-      context.fail!(message: :card_missing) if context.card.nil?
+      context.fail!(message: :card_missing) unless context.card
 
-      quality = context.quality.to_i
-      context.fail!(message: :invalid_quality) unless quality.between?(0, 5)
+      context.fail!(message: :invalid_quality) unless normalized_quality.between?(0, 5)
     end
 
-    def create_log!
-      context.log = context.card.user.review_logs.create!(
-        reviewable: context.card.reviewable,
-        quality: context.quality.to_i,
-        interval: context.card.interval,
-        ease_factor: context.card.ease_factor,
+    def normalized_quality
+      context.quality.to_i
+    end
+
+    def create_log!(card, quality)
+      context.log = card.user.review_logs.create!(
+        reviewable: card.reviewable,
+        quality: quality,
+        interval: card.interval,
+        ease_factor: card.ease_factor,
         response_time_ms: context.response_time_ms
       )
     end
