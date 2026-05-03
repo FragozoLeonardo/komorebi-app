@@ -1,20 +1,30 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
-  --color-km-bg-light: #f7f2e8;
-  --color-km-surface-light: #fffaf0;
-  --color-km-text-light: #2a241d;
-  --color-km-muted-light: #6f6558;
-  --color-km-border-light: #d6c3a1;
-  --color-km-accent-light: #c6a56b;
+@font-face {
+  font-family: "KanjiStrokeOrders";
+  src: url("/assets/KanjiStrokeOrders_v4.005.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
-  --color-km-bg-dark: #111311;
-  --color-km-surface-dark: #171917;
-  --color-km-text-dark: #f2dfb2;
-  --color-km-muted-dark: #b8a98a;
-  --color-km-border-dark: #8f7448;
-  --color-km-accent-dark: #d4b06a;
+@theme {
+  --color-km-bg-light: #f6f1e7;
+  --color-km-surface-light: #fdf9f1;
+  --color-km-text-light: #2f2a24;
+  --color-km-muted-light: #746b5d;
+  --color-km-border-light: #d8ccb8;
+  --color-km-accent-light: #b89a5b;
+
+  --color-km-bg-dark: #111715;
+  --color-km-surface-dark: #18201d;
+  --color-km-text-dark: #ebe4d8;
+  --color-km-muted-dark: #a39a8c;
+  --color-km-border-dark: #38433f;
+  --color-km-accent-dark: #d0b06f;
+
+  --font-kanji-stroke: "KanjiStrokeOrders", serif;
 }
 
 :root {

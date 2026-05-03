@@ -1,9 +1,9 @@
-<div class="group cursor-default">
-  <div class="font-serif text-7xl text-slate-800 transition-all duration-300 group-hover:scale-110 group-hover:text-[#D4AF37] dark:text-slate-200">
+<%= link_to kanji_path(kanji), class: "group block cursor-pointer" do %>
+  <div class="text-7xl font-light text-[var(--app-text)] transition-all duration-300 group-hover:scale-110 group-hover:text-[var(--app-accent)]">
     <%= kanji.kanji %>
   </div>
 
-  <div class="mt-4 text-[10px] font-light uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">
+  <div class="mt-4 text-[10px] font-light uppercase tracking-[0.3em] text-[var(--app-muted)]">
     <%= kanji.meaning %>
   </div>
-</div>
+<% end %>

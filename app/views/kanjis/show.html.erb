@@ -1,0 +1,77 @@
+<section class="mx-auto max-w-4xl px-6 py-10">
+  <div class="mb-8 flex items-center justify-between gap-4">
+    <%= link_to "← Voltar para N5",
+                study_n5_path,
+                class: "inline-flex items-center text-sm font-medium text-[var(--app-muted)] transition hover:text-[var(--app-text)]" %>
+
+    <%= render "shared/theme_toggle" %>
+  </div>
+
+  <div class="overflow-hidden rounded-3xl border border-[var(--app-border)] bg-[var(--app-surface)] shadow-sm">
+    <div class="border-b border-[var(--app-border)] px-8 py-10">
+      <div class="flex flex-col items-center text-center">
+        <span class="mb-4 inline-flex rounded-full border border-[var(--app-border)] bg-[var(--app-bg)] px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[var(--app-accent)]">
+          <%= @kanji.jlpt_level&.level_description %>
+        </span>
+
+        <div
+          data-testid="kanji-glyph"
+          class="font-kanji-stroke text-7xl leading-none text-[var(--app-text)] sm:text-8xl md:text-9xl">
+          <%= @kanji.kanji %>
+        </div>
+
+        <p class="mt-5 text-2xl font-semibold text-[var(--app-text)]">
+          <%= @kanji.meaning %>
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-6 px-8 py-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <article class="rounded-2xl border border-[var(--app-border)] bg-[var(--app-bg)] p-6">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-[var(--app-muted)]">
+            Leitura(s) on
+          </h2>
+          <p class="mt-3 text-lg leading-relaxed text-[var(--app-text)]">
+            <%= @kanji.on_reading.presence || "—" %>
+          </p>
+        </article>
+
+        <article class="rounded-2xl border border-[var(--app-border)] bg-[var(--app-bg)] p-6">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-[var(--app-muted)]">
+            Leitura(s) kun
+          </h2>
+          <p class="mt-3 text-lg leading-relaxed text-[var(--app-text)]">
+            <%= @kanji.kun_reading.presence || "—" %>
+          </p>
+        </article>
+      </div>
+
+      <article class="rounded-2xl border border-[var(--app-border)] bg-[var(--app-bg)] p-6">
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-[var(--app-muted)]">
+          Mnemônico
+        </h2>
+        <p class="mt-3 text-lg leading-relaxed text-[var(--app-text)]">
+          <%= @kanji.mnemonic.presence || "Nenhum mnemônico cadastrado ainda." %>
+        </p>
+      </article>
+
+      <section class="rounded-2xl border border-dashed border-[var(--app-border)] bg-[var(--app-bg)] p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-[var(--app-muted)]">
+              Palavras relacionadas
+            </h2>
+            <p class="mt-2 text-sm text-[var(--app-muted)]">
+              Em breve, esta seção poderá mostrar vocabulário do JLPT que usa este kanji.
+            </p>
+          </div>
+
+          <span class="rounded-full border border-[var(--app-border)] px-3 py-1 text-xs font-medium text-[var(--app-muted)]">
+            Em breve
+          </span>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
