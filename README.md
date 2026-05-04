@@ -1,135 +1,100 @@
 # Komorebi (木漏れ日)
 
-A backend-focused Japanese learning system implementing a **Spaced Repetition System (SM-2 algorithm)** for long-term retention.
+A backend-focused Japanese learning system implementing a Spaced Repetition System (SM-2 algorithm) for long-term retention.
 
-Originally designed for Brazilian Portuguese speakers, Komorebi structures learning across **Kanji, Vocabulary, and Grammar**, aligned with JLPT levels.
+Originally designed for Brazilian Portuguese speakers, Komorebi structures learning across Kanji, Vocabulary, and Grammar, aligned with JLPT levels.
 
 ---
+
+## V.0.0.1 Demo Video
+
+[![Watch the Komorebi Demo](https://img.youtube.com/vi/tEHt8BJK7vM/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEHt8BJK7vM)  
+Click the image above to watch the demonstration.
 
 ## Spaced Repetition System (SRS)
 
 Komorebi implements a simplified version of the SM-2 algorithm (used in systems like Anki) to optimize long-term memory retention.
 
-### How it works
+How it works
 
-1. User reviews a learning item with a quality score (0–5)
+1. User reviews a learning item with a quality score (0-5).
 2. The system recalculates:
+   * Review interval: The gap until the next session.
+   * Ease factor: A multiplier that adjusts based on performance.
+   * Next review date: Scheduled according to the algorithm's output.
+3. The updated state is persisted in ReviewCard.
+4. A ReviewLog is created for historical tracking and analysis.
 
-  * review interval
-  * ease factor
-  * next review date
-3. The updated state is persisted in `ReviewCard`
-4. A `ReviewLog` is created for historical tracking and analysis
-
-### Example
+## Technical Implementation
 
 ```ruby
+Example of a review orchestration
 Cards::Grade.call(
-  card: review_card,
-  quality: 4,
-  response_time_ms: 1200
+        card: review_card,
+        quality: 4,
+        response_time_ms: 1200
 )
 ```
 
-### Responsibilities
+## Responsibilities
 
-* `Srs::Sm2Calculator` — core scheduling algorithm
-* `Cards::Grade` — transactional orchestration of review logic
-* `ReviewCard` — current learning state
-* `ReviewLog` — historical review data
-
-### Key behaviors
-
-* Resets repetition on low-quality responses
-* Dynamically adjusts difficulty via ease factor
-* Enforces minimum ease factor (SM-2 constraint)
-* Uses transactional updates to guarantee consistency
+* Srs::Sm2Calculator — Core scheduling algorithm.
+* Cards::Grade — Transactional orchestration of review logic.
+* ReviewCard — Current learning state (polymorphic).
+* ReviewLog — Historical review data for analytics.
 
 ---
 
 ## Architecture
 
-* Ruby on Rails backend architecture
-* Polymorphic `ReviewCard` system supporting multiple learning domains
-* Clear separation between domain logic and orchestration layer
-* Transactional consistency using service/interactor pattern
-* Database-level constraints ensuring data integrity
-* Test-driven development with RSpec
+* Ruby on Rails backend architecture focused on clean domain logic.
+* Polymorphic ReviewCard system supporting multiple learning domains.
+* Service/Interactor pattern for transactional consistency and business logic isolation.
+* Database-level constraints ensuring data integrity at the PostgreSQL layer.
+* Test-Driven Development with a robust RSpec suite.
 
 ---
 
 ## Learning Domains
 
-### Kanji (Implemented)
+### Kanji (In Progress)
 
-* JLPT-based organization (N5 → N1)
-* Meanings and readings (on/kun)
-* Structured progression by difficulty
+* JLPT Organization: Structured from N5 to N1.
+* Comprehensive Data: Includes meanings, On'yomi, and Kun'yomi readings.
+* Progression: Logic-based flow by character difficulty.
+* Note: The Kanji learning feature is currently under active development.
 
-### Vocabulary (Planned)
+### Vocabulary & Grammar (Planned)
 
-* JLPT-aligned vocabulary items
-* Association with Kanji and contextual usage
-
-### Grammar (Planned)
-
-* Grammar points structured by JLPT level
-* Planned support for examples and usage patterns
-
----
-
-## Core Models
-
-* `User` — application users
-* `JlptLevel` — JLPT hierarchy (N5 → N1)
-* `Kanji` — characters with meanings and readings
-* `ReviewCard` — polymorphic review tracking system
-* `ReviewLog` — historical performance tracking
+* Vocabulary: JLPT-aligned items with contextual usage.
+* Grammar: Structural points with support for example patterns.
 
 ---
 
 ## Testing Strategy
 
-* RSpec for domain and service behavior
-* FactoryBot for test data generation
-* Validation of business rules and database constraints
-* Transaction and failure scenario coverage
+* RSpec: Full coverage of domain behavior and service objects.
+* Capybara: Acceptance tests for user interaction flows.
+* FactoryBot: Efficient test data generation.
+* Integration Tests: Validation of business rules and database state transitions.
 
 ---
 
-## Current Status
+## Current Status & Purpose
 
-* Kanji domain implemented
-* JLPT structure implemented
-* Spaced Repetition System (SM-2) implemented
-* Review tracking and logging system implemented
+The system is currently in its initial phase, focusing on a solid backend foundation. It was built to demonstrate engineering proficiency in:
 
-The system is being expanded to support additional learning domains and richer user interaction flows.
-
----
-
-## Purpose
-
-Komorebi was built to demonstrate backend engineering skills in:
-
-* data modeling for learning systems
-* implementation of spaced repetition algorithms
-* transactional business logic
-* scalable and extensible system design
-* test-driven development
+* Complex Data Modeling: Handling educational structures.
+* Algorithm Implementation: Real-world application of SM-2 logic.
+* Scalable Design: Extensible architecture for new learning domains.
 
 ---
 
 ## Tech Stack
 
 * Ruby on Rails
+* Ruby
 * PostgreSQL
-* RSpec
-* FactoryBot
-* ActiveRecord
-
----
-
-## Logo
-
-![Komorebi Logo](app/assets/images/komorebi-logo.png)
+* Hotwire (Turbo/Stimulus)
+* Tailwind CSS
+* RSpec, Capybara, and FactoryBot
